@@ -5,7 +5,7 @@ const keyboard = document.querySelector(".keyboard-container");
 const messageDisplay = document.querySelector(".message-container");
 // console.log("keyboard", keyboard);
 //querySelector() returns the first Element within the document that matches the specified selector, or group of selectors.
-const WORDLE = "GUESS";
+const wordle = "GUESS";
 let gameOver = false;
 const keys = [
   "Q",
@@ -123,7 +123,7 @@ const checkGuessRow = (checkRow) => {
     showMessages("Not enough word");
   } else {
     const guessWord = checkRow.join("");
-    if (guessWord == WORDLE) {
+    if (guessWord == wordle) {
       showMessages("You nailed it!!!!!");
       gameOver = true;
     } else {
@@ -143,22 +143,35 @@ const showMessages = (message) => {
 };
 
 const checkCharsInRow = (charsArray) => {
-  charsArray.map((char, charIndex) => {
+  charsArray.forEach((char, charIndex) => {
     const guessedNode = document.getElementById(
       "row-" + currentRow + "-tile-" + charIndex
     );
     const guessedKey = document.getElementById(char);
     // console.log("guessedKey", guessedKey);
     // console.log("guessedNode", guessedNode);
-    if (char == WORDLE[charIndex]) {
-      guessedNode.style.backgroundColor = "#65C18C";
-      guessedKey.style.backgroundColor = "#65C18C";
-    } else if (char != WORDLE[charIndex] && WORDLE.includes(char)) {
-      guessedNode.style.backgroundColor = "#C9B458";
+    if (char == wordle[charIndex]) {
+       setTimeout(() => {
+         (guessedNode.style.animation = "0.5s linear flipping"),
+           (guessedNode.style.backgroundColor = "#6AAA64");
+       }, 500 * charIndex);
+       guessedKey.style.backgroundColor = "#6AAA64";
+    } else if (char != wordle[charIndex] && wordle.includes(char)) {
+      setTimeout(() => {
+        (guessedNode.style.animation = "0.5s linear flipping"),
+          (guessedNode.style.backgroundColor = "#C9B458");
+      }, 500 * charIndex);
+      // guessedNode.style.backgroundColor = "#C9B458";
+     
       guessedKey.style.backgroundColor = "#C9B458";
       // console.log("flip the node to yellow");
     } else {
-      guessedNode.style.backgroundColor = "#797C7E";
+      setTimeout(
+        () => {
+          guessedNode.style.animation = "0.5s linear flipping",  
+          guessedNode.style.backgroundColor = "#797C7E" },
+        500 * charIndex
+      );
       guessedKey.style.backgroundColor = "#797C7E";
     }
   });
@@ -167,7 +180,7 @@ const checkCharsInRow = (charsArray) => {
 };
 
 const checkGame = (lastGuess) => {
-  if (lastGuess.join("") == WORDLE) {
+  if (lastGuess.join("") == wordle) {
     showMessages("You nailed it!!!");
   } else {
     gameOver = true;

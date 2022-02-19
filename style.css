@@ -184,7 +184,7 @@ h1 {
     justify-content: center;
     align-items: center;
 }
-.tile-container div div{
+.tile-container div div {
   background-color: white;
   width: 55px;
   height: 55px;
@@ -193,6 +193,20 @@ h1 {
   margin-right: 3px;
   margin-bottom: 3px;
   font-size: 20px;
+}
+
+
+
+@keyframes flipping {
+  0% {
+    transform: rotateX(0deg);
+  }
+  50% {
+    transform: rotateX(90deg);
+  }
+  100% {
+    transform: rotateX(0deg);
+  }
 }
 
 .keyboard-container button:nth-child(20) {
