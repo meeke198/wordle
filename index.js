@@ -28,4 +28,32 @@ app.get('/word', (req, res) => {
     });
 });
 
+
+app.get('/check', (req, res) => {
+    const word = req.query.word
+    console.log("app.get frontend request", req)
+    console.log("app.get backend response", res)
+const options = {
+  method: "GET",
+  url: "https://twinword-word-graph-dictionary.p.rapidapi.com/theme/",
+  params: { entry: word },
+  headers: {
+    "x-rapidapi-host": "twinword-word-graph-dictionary.p.rapidapi.com",
+    "x-rapidapi-key": process.env.RAPID_DIC_API_KEY,
+  },
+};
+
+axios
+  .request(options)
+  .then((response) => {
+    console.log("axios backend check response.data", response.data);
+    console.log(response.data);
+    res.json(response.data.result_msg)
+    // console.log(response.data);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+});
+
 app.listen(PORT, () => console.log("Server running on port " + PORT))

@@ -1,3 +1,5 @@
+// const { json } = require("body-parser");
+
 const tiles = document.querySelector(".tile-container");
 const gameContainer = document.querySelector(".game-container");
 // console.log("tiles", tiles)
@@ -135,13 +137,23 @@ const checkGuessRow = (checkRow) => {
     showMessages("Not enough word");
   } else {
     const guessWord = checkRow.join("");
-    if (guessWord == wordle) {
-      showMessages("You nailed it!!!!!");
-      gameOver = true;
-    } else {
-      checkCharsInRow(checkRow);
-    }
-  }
+    fetch(`http://localhost:8000/check/?word=${guessWord}`)
+      .then((response) => console.log("response.json()", response.json())) //response.json() is a promise contains promisestate and promiseresult
+      .then((json) => {
+        console.log("json", json)
+        if (json == "Entry word not found"){
+          showMessages("Not in word list");
+        } else {
+          if (guessWord == wordle) {
+              showMessages("You nailed it!!!!!");
+              gameOver = true;
+              return;
+            } else {
+              checkCharsInRow(checkRow);
+            }
+        }
+        });
+      }
 };
 
 const showMessages = (message) => {
@@ -192,6 +204,7 @@ const checkCharsInRow = (charsArray) => {
 };
 
 const checkGame = (lastGuess) => {
+  checkCharsInRow(lastGuess);
   if (lastGuess.join("") == wordle) {
     showMessages("You nailed it!!!");
   } else {
