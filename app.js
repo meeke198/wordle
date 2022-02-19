@@ -73,22 +73,30 @@ guessRows.forEach((row, rowIndex) => {
 const handleClick = (letter) => {
   if (letter == "del") {
     deleteLetter(letter);
-    console.log("guessRows", guessRows);
+    // console.log("guessRows", guessRows);
     return;
   } else if (letter == "ENTER") {
-    checkGuessRow(guessRows[currentRow]);
-    console.log("guessRows", guessRows[currentRow]);
-    console.log("currentTile", currentTile);
-    return;
+    console.log("current row", currentRow)
+    console.log("current tile", currentTile)
+    if (currentRow == 5) {
+      checkGame(guessRows[currentRow]);
+    } else {
+      checkGuessRow(guessRows[currentRow]);
+      // console.log("guessRows", guessRows[currentRow]);
+      // console.log("currentTile", currentTile);
+      return;
+    }
   } else {
-    console.log("press", letter);
+    // console.log("press", letter);
     addLetter(letter);
   }
 };
 let currentRow = 0;
 let currentTile = 0;
 const addLetter = (letter) => {
-  if (currentRow < 5 && currentTile < 6) {
+   console.log("current row", currentRow);
+   console.log("current tile", currentTile);
+  if (currentRow < 6 && currentTile < 6) {
     const node = document.getElementById(
       "row-" + currentRow + "-tile-" + currentTile
     );
@@ -128,8 +136,10 @@ const showMessages = (message) => {
   const messageElement = document.createElement("p");
   messageElement.textContent = message;
   messageDisplay.append(messageElement);
-    // setInterval(() => {messageDisplay.style.display = 'none'}, 1000);
-    setTimeout(() => {messageDisplay.removeChild(messageElement)}, 2000);
+  // setInterval(() => {messageDisplay.style.display = 'none'}, 1000);
+  setTimeout(() => {
+    messageDisplay.removeChild(messageElement);
+  }, 2000);
 };
 
 const checkCharsInRow = (charsArray) => {
@@ -137,25 +147,32 @@ const checkCharsInRow = (charsArray) => {
     const guessedNode = document.getElementById(
       "row-" + currentRow + "-tile-" + charIndex
     );
-    const guessedKey = document.getElementById(
-      char
-    );
-    console.log("guessedKey", guessedKey);
-    console.log("guessedNode", guessedNode);
+    const guessedKey = document.getElementById(char);
+    // console.log("guessedKey", guessedKey);
+    // console.log("guessedNode", guessedNode);
     if (char == WORDLE[charIndex]) {
       guessedNode.style.backgroundColor = "#65C18C";
       guessedKey.style.backgroundColor = "#65C18C";
     } else if (char != WORDLE[charIndex] && WORDLE.includes(char)) {
       guessedNode.style.backgroundColor = "#C9B458";
-       guessedKey.style.backgroundColor = "#C9B458";
+      guessedKey.style.backgroundColor = "#C9B458";
       // console.log("flip the node to yellow");
     } else {
       guessedNode.style.backgroundColor = "#797C7E";
-       guessedKey.style.backgroundColor = "#797C7E";
+      guessedKey.style.backgroundColor = "#797C7E";
     }
   });
   currentRow++;
   currentTile = 0;
+};
+
+const checkGame = (lastGuess) => {
+  if (lastGuess.join("") == WORDLE) {
+    showMessages("You nailed it!!!");
+  } else {
+    gameOver = true;
+    showMessages("Game over!!!");
+  }
 };
 //addLetter()
 //handlekeydown
