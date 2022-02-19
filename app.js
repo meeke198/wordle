@@ -1,11 +1,12 @@
 const tiles = document.querySelector(".tile-container");
+const gameContainer = document.querySelector(".game-container");
 // console.log("tiles", tiles)
 const keyboard = document.querySelector(".keyboard-container");
 const messageDisplay = document.querySelector(".message-container");
 // console.log("keyboard", keyboard);
 //querySelector() returns the first Element within the document that matches the specified selector, or group of selectors.
 const WORDLE = "GUESS";
-
+let gameOver = false;
 const keys = [
   "Q",
   "W",
@@ -76,7 +77,8 @@ const handleClick = (letter) => {
     return;
   } else if (letter == "ENTER") {
     checkGuessRow(guessRows[currentRow]);
-    console.log("guessRows", guessRows);
+    console.log("guessRows", guessRows[currentRow]);
+    console.log("currentTile", currentTile);
     return;
   } else {
     console.log("press", letter);
@@ -94,7 +96,7 @@ const addLetter = (letter) => {
     guessRows[currentRow][currentTile] = letter;
     node.setAttribute("data", letter);
     currentTile++;
-    console.log("guessRows", guessRows);
+    // console.log("guessRows", guessRows);
   }
 };
 
@@ -108,40 +110,53 @@ const deleteLetter = () => {
   node.setAttribute("data", ""); //tai sao phai set data? sao khong that no hien len tren html file
 };
 
-const checkGuessRow = (currentRow) => {
+const checkGuessRow = (checkRow) => {
   if (currentTile < 4) {
-    console.log("Not enough word");
+    showMessages("Not enough word");
   } else {
-    const guessWord = currentRow.join('');
-      if (guessWord == WORDLE) {
-        showMessages(message);
-      } else {
-        flipNode(currentRow)
-      }
+    const guessWord = checkRow.join("");
+    if (guessWord == WORDLE) {
+      showMessages("You nailed it!!!!!");
+      gameOver = true;
+    } else {
+      checkCharsInRow(checkRow);
+    }
   }
 };
 
-
 const showMessages = (message) => {
-  const messageElement = document.createAttribute('p');
+  const messageElement = document.createElement("p");
   messageElement.textContent = message;
-  messageDisplay.append(messageElement)
-}
+  messageDisplay.append(messageElement);
+    // setInterval(() => {messageDisplay.style.display = 'none'}, 1000);
+    setTimeout(() => {messageDisplay.removeChild(messageElement)}, 2000);
+};
 
-const flipNode = (currentRow) => {
-  currentRow.forEach((char, charIndex) => {
-      if (char == WORDLE[charIndex]) {
-        console.log("flip the node to green");
-      } else if (
-        char != WORDLE[charIndex] &&
-        currentRow[charIndex].includes(wordle)
-      ) {
-        console.log("flip the node to yellow");
-      } else {
-        console.log("flip the node to gray");
-      }
-    });
-}
+const checkCharsInRow = (charsArray) => {
+  charsArray.map((char, charIndex) => {
+    const guessedNode = document.getElementById(
+      "row-" + currentRow + "-tile-" + charIndex
+    );
+    const guessedKey = document.getElementById(
+      char
+    );
+    console.log("guessedKey", guessedKey);
+    console.log("guessedNode", guessedNode);
+    if (char == WORDLE[charIndex]) {
+      guessedNode.style.backgroundColor = "#65C18C";
+      guessedKey.style.backgroundColor = "#65C18C";
+    } else if (char != WORDLE[charIndex] && WORDLE.includes(char)) {
+      guessedNode.style.backgroundColor = "#C9B458";
+       guessedKey.style.backgroundColor = "#C9B458";
+      // console.log("flip the node to yellow");
+    } else {
+      guessedNode.style.backgroundColor = "#797C7E";
+       guessedKey.style.backgroundColor = "#797C7E";
+    }
+  });
+  currentRow++;
+  currentTile = 0;
+};
 //addLetter()
 //handlekeydown
 //lay letter tu keydown bo vao guessRow(1-6)

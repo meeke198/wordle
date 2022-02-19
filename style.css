@@ -142,7 +142,16 @@ h1 {
   width: 560px;
   border-bottom: solid 1px #F2F013;
 }
-
+.message-container {
+  height: 40px;
+}
+.message-container p {
+  margin-top: 10px;
+  background-color: azure;
+  color: #FF5C8D;
+  border-radius: 4px;
+  padding: 10px;
+}
 .tile-container {
   display: flex;
   flex-direction: column;
