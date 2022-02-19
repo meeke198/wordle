@@ -5,8 +5,19 @@ const keyboard = document.querySelector(".keyboard-container");
 const messageDisplay = document.querySelector(".message-container");
 // console.log("keyboard", keyboard);
 //querySelector() returns the first Element within the document that matches the specified selector, or group of selectors.
-const wordle = "GUESS";
-let gameOver = false;
+let wordle;
+const getWordle = () => {
+  fetch('http://localhost:8000/word')
+  .then(response => response.json())
+  .then(json => {
+    console.log(json)
+    wordle = json.toUpperCase()
+    console.log("wordle", wordle)
+  })
+  .catch(err => console.error(err))
+}
+getWordle();
+
 const keys = [
   "Q",
   "W",
@@ -76,8 +87,8 @@ const handleClick = (letter) => {
     // console.log("guessRows", guessRows);
     return;
   } else if (letter == "ENTER") {
-    console.log("current row", currentRow)
-    console.log("current tile", currentTile)
+    // console.log("current row", currentRow)
+    // console.log("current tile", currentTile)
     if (currentRow == 5) {
       checkGame(guessRows[currentRow]);
     } else {
@@ -93,9 +104,10 @@ const handleClick = (letter) => {
 };
 let currentRow = 0;
 let currentTile = 0;
+let gameOver = false;
 const addLetter = (letter) => {
-   console.log("current row", currentRow);
-   console.log("current tile", currentTile);
+  //  console.log("current row", currentRow);
+  //  console.log("current tile", currentTile);
   if (currentRow < 6 && currentTile < 6) {
     const node = document.getElementById(
       "row-" + currentRow + "-tile-" + currentTile

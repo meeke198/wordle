@@ -1,27 +1,31 @@
 const PORT = 8000;
 const axios = require("axios").default;
 const express = require("express");
-
+require ('dotenv').config();
+const cors = require("cors");
 const app = express();
-app.get("/word", (req, res) => {
+app.use(cors());
+
+app.get('/word', (req, res) => {
     const options = {
         method: "GET",
     url: "https://random-words5.p.rapidapi.com/getMultipleRandom",
     params: { count: "5", wordLength: "5" },
     headers: {
       "x-rapidapi-host": "random-words5.p.rapidapi.com",
-      "x-rapidapi-key": "4050c65767mshce81a987a1e7c25p196598jsnc27f33d3b3ce",
+      "x-rapidapi-key": process.env.RAPID_API_KEY
     },
   };
   
   axios
   .request(options)
   .then((response) => {
-      console.log(response.data);
+      console.log(response.data)
+      res.json(response.data[0])
     })
     .catch((error) => {
         console.error(error);
     });
 });
 
-app.listen(PORT, () => console.log("Server is running on" + PORT))
+app.listen(PORT, () => console.log("Server running on port " + PORT))
