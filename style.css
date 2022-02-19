@@ -124,23 +124,26 @@ ul {
 } */
 h1 {
   font-size: 50px;
-  margin-top: 10%;
+  margin-top: 5%;
   text-align: center;
   color: #F1D00A;
-}
-.game-container {
+  border-bottom: solid 1px #f2f013;
 
+}
+
+.game-container {
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: start;
   align-items: center;
   background-image: url('asset/bg4.jpg');
 }
 .title-container {
   text-align: center;
+  font-weight: 900;
   width: 560px;
-  border-bottom: solid 1px #F2F013;
+  /* height: 10px; */
 }
 .message-container {
   height: 40px;
@@ -157,9 +160,9 @@ h1 {
   flex-direction: column;
   flex-wrap: wrap;
   width: 60%;
-  margin-bottom: 30px;
-  margin-top: 30px;
+  margin-bottom: 20px;
   align-items: center;
+
 }
 
 .keyboard-container {
@@ -186,13 +189,14 @@ h1 {
 }
 .tile-container div div {
   background-color: white;
-  width: 55px;
-  height: 55px;
+  width: 50px;
+  height: 50px;
   border: solid 1px grey;
   color: #325288;
   margin-right: 3px;
   margin-bottom: 3px;
   font-size: 20px;
+  font-weight: 700;
 }
 
 
