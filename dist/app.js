@@ -1,6 +1,4 @@
-// const { json } = require("body-parser");
-// const axios = require("axios").default;
-// console.log("axios", axios);
+
 const tiles = document.querySelector(".tile-container");
 const gameContainer = document.querySelector(".game-container");
 // console.log("tiles", tiles)
@@ -8,29 +6,24 @@ const keyboard = document.querySelector(".keyboard-container");
 const messageDisplay = document.querySelector(".message-container");
 window.addEventListener("keydown", handleKeyDown);
 function handleKeyDown(e){
-  // debugger
-  console.log(e.key)
   let letter = e.key.toUpperCase();
   let alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
   if (letter == "BACKSPACE") {
-    // debugger
     deleteLetter(letter);
     console.log("guessRows", guessRows);
     return;
   } else if (letter == "ENTER") {
-    // debugger
-    console.log("current row", currentRow)
-    console.log("current tile", currentTile)
+    // console.log("current row", currentRow)
+    // console.log("current tile", currentTile)
     if (currentRow == 5) {
       checkGame(guessRows[currentRow]);
     } else {
       checkGuessRow(guessRows[currentRow]);
-      console.log("guessRows", guessRows[currentRow]);
-      console.log("currentTile", currentTile);
+      // console.log("guessRows", guessRows[currentRow]);
+      // console.log("currentTile", currentTile);
       return;
     }
   } else if (alphabet.includes(letter)) {
-    // debugger
     // console.log("press", letter);
     addLetter(letter);
   }
@@ -136,31 +129,6 @@ const handleClick = (letter) => {
   }
 };
 
-
-// const handleKeyUp = (e) => {
-//   console.log("e", e)
-//   let keyUpValue = e.target.value;
-//   if (keyUpValue == "del") {
-//     deleteLetter(keyUpValue);
-//     // console.log("guessRows", guessRows);
-//     return;
-//   } else if (keyUpValue == "ENTER") {
-//     // console.log("current row", currentRow)
-//     // console.log("current tile", currentTile)
-//     if (currentRow == 5) {
-//       checkGame(guessRows[currentRow]);
-//     } else {
-//       checkGuessRow(guessRows[currentRow]);
-//       // console.log("guessRows", guessRows[currentRow]);
-//       // console.log("currentTile", currentTile);
-//       return;
-//     }
-//   } else {
-//     // console.log("press", letter);
-//     addLetter(keyUpValue);
-//   }
-// };
-
 let currentRow = 0;
 let currentTile = 0;
 let gameOver = false;
@@ -173,7 +141,6 @@ const addLetter = (letter) => {
     );
     node.textContent = letter; //UI
     guessRows[currentRow][currentTile] = letter; 
-    // node.setAttribute("data", letter);
     currentTile++;
     // console.log("guessRows", guessRows);
   }
@@ -188,8 +155,7 @@ const deleteLetter = () => {
     "row-" + currentRow + "-tile-" + currentTile
   );
   node.textContent = "";
-  guessRows[currentRow][currentTile] = ""; //tai sao can set cai nay, no khong giong line 104 sao?
-  node.setAttribute("data", ""); //tai sao phai set data? sao khong that no hien len tren html file
+  guessRows[currentRow][currentTile] = ""; //set the letter value on UI?
 };
 
 const checkGuessRow = (checkRow) => {
@@ -273,9 +239,4 @@ const checkGame = (lastGuess) => {
     showMessages("Game over!!!");
   }
 };
-//addLetter()
-//handlekeydown
-//lay letter tu keydown bo vao guessRow(1-6)
-//check neu no la meaning word(word dictionary api) thi so sanh guessword vs wordle
-//doi mau o neu no co chua letter nao cua tu khoa
-//check game
+
