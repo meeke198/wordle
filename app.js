@@ -6,33 +6,37 @@ const gameContainer = document.querySelector(".game-container");
 // console.log("tiles", tiles)
 const keyboard = document.querySelector(".keyboard-container");
 const messageDisplay = document.querySelector(".message-container");
-
-const handleKeyDown = (e) => {
+window.addEventListener("keydown", handleKeyDown);
+function handleKeyDown(e){
+  // debugger
   console.log(e.key)
   let letter = e.key.toUpperCase();
   let alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-  if (letter == "Backspace") {
+  if (letter == "BACKSPACE") {
+    // debugger
     deleteLetter(letter);
-    // console.log("guessRows", guessRows);
+    console.log("guessRows", guessRows);
     return;
-  } else if (letter == "Enter") {
-    // console.log("current row", currentRow)
-    // console.log("current tile", currentTile)
+  } else if (letter == "ENTER") {
+    // debugger
+    console.log("current row", currentRow)
+    console.log("current tile", currentTile)
     if (currentRow == 5) {
       checkGame(guessRows[currentRow]);
     } else {
       checkGuessRow(guessRows[currentRow]);
-      // console.log("guessRows", guessRows[currentRow]);
-      // console.log("currentTile", currentTile);
+      console.log("guessRows", guessRows[currentRow]);
+      console.log("currentTile", currentTile);
       return;
     }
   } else if (alphabet.includes(letter)) {
+    // debugger
     // console.log("press", letter);
     addLetter(letter);
   }
 
 };
-window.addEventListener("keydown", handleKeyDown);
+
 // console.log("keyboard", keyboard);
 //querySelector() returns the first Element within the document that matches the specified selector, or group of selectors.
 let wordle;
@@ -201,6 +205,7 @@ const checkGuessRow = (checkRow) => {
           showMessages("Not in word list");
         } else {
           if (guessWord == wordle) {
+            checkCharsInRow(checkRow);
               showMessages("You nailed it!!!!!");
               gameOver = true;
               return;
