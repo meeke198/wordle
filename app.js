@@ -1,10 +1,38 @@
 // const { json } = require("body-parser");
-
+// const axios = require("axios").default;
+// console.log("axios", axios);
 const tiles = document.querySelector(".tile-container");
 const gameContainer = document.querySelector(".game-container");
 // console.log("tiles", tiles)
 const keyboard = document.querySelector(".keyboard-container");
 const messageDisplay = document.querySelector(".message-container");
+
+const handleKeyDown = (e) => {
+  console.log(e.key)
+  let letter = e.key.toUpperCase();
+  let alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+  if (letter == "Backspace") {
+    deleteLetter(letter);
+    // console.log("guessRows", guessRows);
+    return;
+  } else if (letter == "Enter") {
+    // console.log("current row", currentRow)
+    // console.log("current tile", currentTile)
+    if (currentRow == 5) {
+      checkGame(guessRows[currentRow]);
+    } else {
+      checkGuessRow(guessRows[currentRow]);
+      // console.log("guessRows", guessRows[currentRow]);
+      // console.log("currentTile", currentTile);
+      return;
+    }
+  } else if (alphabet.includes(letter)) {
+    // console.log("press", letter);
+    addLetter(letter);
+  }
+
+};
+window.addEventListener("keydown", handleKeyDown);
 // console.log("keyboard", keyboard);
 //querySelector() returns the first Element within the document that matches the specified selector, or group of selectors.
 let wordle;
@@ -51,6 +79,8 @@ const keys = [
   "del",
 ];
 
+
+
 keys.forEach((key) => {
   const keyElement = document.createElement("button");
   keyElement.textContent = key;
@@ -74,9 +104,6 @@ guessRows.forEach((row, rowIndex) => {
 
   row.forEach((tile, tileIndex) => {
     const tileElement = document.createElement("div");
-    // tileElement.addEventListener('keydown', (e) => {
-    //   console.log(e);
-    // });
     tileElement.setAttribute("id", "row-" + rowIndex + "-tile-" + tileIndex);
     rowElement.append(tileElement);
   });
@@ -104,25 +131,54 @@ const handleClick = (letter) => {
     addLetter(letter);
   }
 };
+
+
+// const handleKeyUp = (e) => {
+//   console.log("e", e)
+//   let keyUpValue = e.target.value;
+//   if (keyUpValue == "del") {
+//     deleteLetter(keyUpValue);
+//     // console.log("guessRows", guessRows);
+//     return;
+//   } else if (keyUpValue == "ENTER") {
+//     // console.log("current row", currentRow)
+//     // console.log("current tile", currentTile)
+//     if (currentRow == 5) {
+//       checkGame(guessRows[currentRow]);
+//     } else {
+//       checkGuessRow(guessRows[currentRow]);
+//       // console.log("guessRows", guessRows[currentRow]);
+//       // console.log("currentTile", currentTile);
+//       return;
+//     }
+//   } else {
+//     // console.log("press", letter);
+//     addLetter(keyUpValue);
+//   }
+// };
+
 let currentRow = 0;
 let currentTile = 0;
 let gameOver = false;
 const addLetter = (letter) => {
   //  console.log("current row", currentRow);
   //  console.log("current tile", currentTile);
-  if (currentRow < 6 && currentTile < 6) {
+  if (currentRow < 6 && currentTile < 5) {
     const node = document.getElementById(
       "row-" + currentRow + "-tile-" + currentTile
     );
-    node.textContent = letter;
-    guessRows[currentRow][currentTile] = letter;
-    node.setAttribute("data", letter);
+    node.textContent = letter; //UI
+    guessRows[currentRow][currentTile] = letter; 
+    // node.setAttribute("data", letter);
     currentTile++;
     // console.log("guessRows", guessRows);
   }
 };
 
 const deleteLetter = () => {
+  if(currentTile == 0){
+    return
+  }
   currentTile--;
   const node = document.getElementById(
     "row-" + currentRow + "-tile-" + currentTile
@@ -138,7 +194,7 @@ const checkGuessRow = (checkRow) => {
   } else {
     const guessWord = checkRow.join("");
     fetch(`http://localhost:8000/check/?word=${guessWord}`)
-      .then((response) => console.log("response.json()", response.json())) //response.json() is a promise contains promisestate and promiseresult
+      .then((response) => response.json()) //response.json() is a promise contains promisestate and promiseresult
       .then((json) => {
         console.log("json", json)
         if (json == "Entry word not found"){
