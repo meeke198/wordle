@@ -2,12 +2,10 @@
   "name": "wordle",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --mode=production",
-     "deploy": "npm run build && gh-pages -d dist"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
